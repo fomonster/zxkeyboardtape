@@ -1,0 +1,66 @@
+--------------------------------------------------------------------------------------
+Timing Analyzer Summary
+--------------------------------------------------------------------------------------
+
+Type           : Worst-case tsu
+Slack          : N/A
+Required Time  : None
+Actual Time    : 11.000 ns
+From           : DAT[0]
+To             : keyData[40]
+From Clock     : --
+To Clock       : STROBE
+Failed Paths   : 0
+
+Type           : Worst-case tco
+Slack          : N/A
+Required Time  : None
+Actual Time    : 26.000 ns
+From           : keyData[35]
+To             : KBD[0]
+From Clock     : STROBE
+To Clock       : --
+Failed Paths   : 0
+
+Type           : Worst-case tpd
+Slack          : N/A
+Required Time  : None
+Actual Time    : 24.000 ns
+From           : KBA[7]
+To             : KBD[0]
+From Clock     : --
+To Clock       : --
+Failed Paths   : 0
+
+Type           : Worst-case th
+Slack          : N/A
+Required Time  : None
+Actual Time    : -3.000 ns
+From           : DAT[0]
+To             : keyData[40]
+From Clock     : --
+To Clock       : STROBE
+Failed Paths   : 0
+
+Type           : Clock Setup: 'STROBE'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 76.92 MHz ( period = 13.000 ns )
+From           : lpm_counter:count_rtl_0|dffs[3]
+To             : keyData[43]
+From Clock     : STROBE
+To Clock       : STROBE
+Failed Paths   : 0
+
+Type           : Total number of failed paths
+Slack          : 
+Required Time  : 
+Actual Time    : 
+From           : 
+To             : 
+From Clock     : 
+To Clock       : 
+Failed Paths   : 0
+
+--------------------------------------------------------------------------------------
+
