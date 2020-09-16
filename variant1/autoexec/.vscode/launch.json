@@ -1,0 +1,41 @@
+{
+    "version":"2.0.0",
+    "tasks": [
+        {
+            "label": "assemble",
+            "type": "shell",
+            "command": "${workspaceFolder}\\build.bat main.asm",
+            "group": {
+                "kind": "debug",
+                "isDefault": true
+            },
+            "isBackground": true, 
+           
+            "presentation": {
+				"echo": false,
+				"reveal": "always",
+				"focus": false,
+				"panel": "new"
+            },
+            
+            "problemMatcher": { 
+                "owner": "asm", 
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern":[
+                    {
+                        "regexp": "^(.*)\\((\\d+)\\):\\s+(warning|error):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "severity": 3,
+                        "message": 4 
+                    }
+                ],
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^\\s*All rights reserved\\s*$",
+                    "endsPattern": "^\\s*Нажмите любую клавишу, чтобы закрыть терминал\\s*$"
+                }
+            }
+        }
+    ]
+}
