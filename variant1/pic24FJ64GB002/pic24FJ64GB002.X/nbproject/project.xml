@@ -12,6 +12,70 @@
             <sourceEncoding>ISO-8859-1</sourceEncoding>
             <asminc-extensions/>
             <make-dep-projects/>
+            <sourceRootList>
+                <sourceRootElem>C:\Work\zx-keyboard\pic24FJ64GB002\pic24FJ64GB002.X</sourceRootElem>
+            </sourceRootList>
+            <confList>
+                <confElem>
+                    <name>XC16_24FJ256GA110</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>C30_24FJ256GA110</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>XC16_24F04KA200</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>C30_24F04KA200</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>XC16_24FJ64GC010</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>C30_24FJ64GC010</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>XC16_24FJ256DA210</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>C30_24FJ256DA210</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>XC16_24EP128GP202</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>C30_24EP128GP202</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>XC16_24HJ128GP202</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>C30_24HJ128GP202</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>XC16_24EP512GU814</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>C30_24EP512GU814</name>
+                    <type>2</type>
+                </confElem>
+            </confList>
+            <formatting>
+                <project-formatting-style>false</project-formatting-style>
+            </formatting>
         </data>
     </configuration>
 </project>

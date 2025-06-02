@@ -36,7 +36,7 @@
 
 // CONFIG3
 #pragma config WPFP = WPFP0             // Write Protection Flash Page Segment Boundary (Page 0 (0x0))
-#pragma config SOSCSEL = 00             // RA4 pin 12 setup as I/O 
+#pragma config SOSCSEL = SOSC         // Secondary Oscillator Pin Mode Select (SOSC pins in Default (high drive-strength) Oscillator Mode)
 #pragma config WUTSEL = LEG             // Voltage Regulator Wake-up Time Select (Default regulator start-up time used)
 #pragma config WPDIS = WPDIS            // Segment Write Protection Disable (Segmented code protection disabled)
 #pragma config WPCFG = WPCFGDIS         // Write Protect Configuration Page Select (Last page and Flash Configuration words are unprotected)
@@ -46,7 +46,7 @@
 #pragma config POSCMOD = NONE              // Primary Oscillator Select (Internal oscillator selected)
 #pragma config I2C1SEL = PRI            // I2C1 Pin Select bit (Use default SCL1/SDA1 pins for I2C1 )
 #pragma config IOL1WAY = OFF             // IOLOCK One-Way Set Enable (The IOLOCK bit can be set and cleared using the unlock sequence)
-#pragma config OSCIOFNC = OFF //ON            // RA3 pin 10 setup as I/O 
+#pragma config OSCIOFNC = OFF           // OSCO Pin Configuration (OSCO pin functions as port I/O (RA3))
 #pragma config FCKSM = CSDCMD           // Clock Switching and Fail-Safe Clock Monitor (Sw Disabled, Mon Disabled)
 #pragma config FNOSC = FRCPLL               // Initial Oscillator Select (Primary Oscillator with PLL module (XTPLL, HSPLL, ECPLL))
 #pragma config PLL96MHZ = ON             // 96MHz PLL Startup Select (96 MHz PLL Startup is enabled automatically on start-up)
@@ -78,7 +78,7 @@ volatile static uint8_t outPorts[11] =
     0x00, // 6 - #BFFE - Enter...H "10111111"   
     0x00, // 7 - #7FFE - Space...B "01111111"
     // mouse
-    0x00, // TAPEIN/OUT, RESET, NMI dsd
+    0x00, // TAPEMODE(IN/OUT), RESET, NMI dsd
           // D0 left btn, D1 right btn, D2 middle btn, D3 reset, D4-D7 wheel 
     0xF5, // #FBDF - mouse X  245
     0xDA  // #FFDF - mouse Y  218
@@ -87,142 +87,30 @@ volatile static uint8_t needSave = false;
 /*******************************************************************************
  * Initialize User Ports/Peripherals/Project here                             
  ******************************************************************************/
-/****************************************************************************/
-/* Useful Macros */
-#define BITS2WORD(sfrBitfield) ( *((unsigned int*) &sfrBitfield) )
-// Convert a bitfield to a word (unsigned int).
-#define BITS2BYTEL(sfrBitfield) ( ((unsigned char*) &sfrBitfield)[0] )
-// Return the low byte (as a unsigned char) of a bitfield.
-#define BITS2BYTEH(sfrBitfield) ( ((unsigned char*) &sfrBitfield)[1] )
-// Return the high byte (as a unsigned char) of a bitfield.
+
 void hardwareConfig(void)
 {
-    /*unsigned int pllCounter;
-    OSCCONBITS OSCCONbitsCopy;
-
-    // Copy the current Clock Setup
-    OSCCONbitsCopy = OSCCONbits;
-    // Slow output clock down to 4Mhz
-    CLKDIVbits.CPDIV = 3;
-    // Enable the PLL ? Note: Fuse bits don?t do this
-    CLKDIVbits.PLLEN = 1;
-    // Wait for the PLL to stabalise
-    for (pllCounter = 0; pllCounter < 600; pllCounter++);
-
-    // Check to see what clock setup is defined ? either internal or external
-    #ifdef USE_FRC_CLOCK
-    // Setup the uC to use the internal FRCPLL mode
-    OSCCONbitsCopy.NOSC = 1;
-    OSCCONbitsCopy.OSWEN = 1;
-    #else
-    // Setup the uC to use the external crystal with the PLL
-    OSCCONbitsCopy.NOSC = 3;
-    OSCCONbitsCopy.OSWEN = 1;
-    #endif
-
-    // Switch over to the new clock setup
-    __builtin_write_OSCCONH( BITS2BYTEH( OSCCONbitsCopy ) );
-    __builtin_write_OSCCONL( BITS2BYTEL( OSCCONbitsCopy ) );
-    // Wait for this transfer to take place
-    while (OSCCONbits.COSC != OSCCONbits.NOSC);
-    // Setup the DIV bits for the FRC, this values means the config word needs to be: PLLDIV_DIV2
-    CLKDIVbits.RCDIV0 = 0;
-
-    // Setup the PLL divider for the correct clock frequency
-    if (CLOCK_FREQ == 32000000)
-    {
-        CLKDIVbits.CPDIV = 0;
-    }
-    else if (CLOCK_FREQ == 16000000)
-    {
-        CLKDIVbits.CPDIV = 1;
-    }
-    else if (CLOCK_FREQ == 8000000)
-    {
-        CLKDIVbits.CPDIV = 2;
-    }
-    else if (CLOCK_FREQ == 4000000)
-    {
-        CLKDIVbits.CPDIV = 3;
-    }
-
-    // Check that the PLL is enabled again and locked properly to the new setup
-    CLKDIVbits.PLLEN = 1;
-    // Note ? don?t want to do this check if we are running in the MPLAB X simulator as it won?t work
-    #ifndef __MPLAB_SIM
-    while(_LOCK != 1);
-    #endif*/
-
-    //OSCCON = 0b01110010; //Enable 16MHz internal oscillator, running from INTOSC
-    
-    
-    /*DOZE<2:0>: CPU Peripheral Clock Ratio Select bits
-    111 = 1:128
-    110 = 1:64
-    101 = 1:32
-    100 = 1:16
-    011 = 1:8
-    010 = 1:4
-    001 = 1:2
-    000 = 1:1*/
-    
-    
-    /*RCDIV<2:0>: FRC Postscaler Select bits
-    111 = 31.25 kHz (divide-by-256)
-    110 = 125 kHz (divide-by-64)
-    101 = 250 kHz (divide-by-32)
-    100 = 500 kHz (divide-by-16)
-    011 = 1 MHz (divide-by-8)
-    010 = 2 MHz (divide-by-4)
-    001 = 4 MHz (divide by 2)
-    000 = 8 MHz (divide by 1)*/
-   // CLKDIVbits.RCDIV = 000;
-    /*CPDIV<1:0>: System Clock Select bits(2)
-    11 = 4 MHz (divide-by-8)(3)
-    10 = 8 MHz (divide-by-4)(3)
-    01 = 16 MHz (divide-by-2)
-    00 = 32 MHz (divide-by-1)*/
-   // CLKDIVbits.CPDIV = 00;
-    
-    /*PLLEN: 96 MHz PLL Enable bit(2)
-    The 96 MHz PLL must be enabled when the USB or the graphics controller module is enabled; This control bit can be overridden by Configuration bits in some PIC24F devices. Refer to Section 6.6.2 ?96 MHz*/
-    
-    
-    //OSCCON2.PLLRDY
-    // NOSC LPFRC; SOSCEN enabled; OSWEN Request Switch; 
-    //__builtin_write_OSCCONH((uint8_t) ((0x0603 >> _OSCCON_NOSC_POSITION) & 0x00FF));
-    //__builtin_write_OSCCONL((uint8_t) (0x0603 & 0x00FF));
-    // Wait for Clock switch to occur
-    //while (OSCCONbits.OSWEN != 0);
-            
     /* Setup analog functionality and port direction */
     AD1PCFGL= 0x9fff;          //ALL PORTB digital pins
   
     
-    //OSCCONbits.P
-    // Configure PLL factors
-    CLKDIVbits.PLLEN = 0;   
-    //PLLFBDbits.PLLDIV = 70;
-    CLKDIVbits.RCDIV = 000; // 8MHz
-    CLKDIVbits.CPDIV = 00; // 32Mhz
-    CLKDIVbits.DOZE = 000;
+    CLKDIVbits.RCDIV=0; // 8MHz
+    //CLKDIVbits.RCDIV=1; // 4MHz
     // enable pll module
     {
-        unsigned int pll_startup_counter = 600;  
-        CLKDIVbits.PLLEN = 1;
+        unsigned int pll_startup_counter = 600;      
         while(pll_startup_counter--);
-     }
+    }
     
 
     /* Initialize peripherals */
     
-    LATB =  0xD00C;
-    TRISB = 0b1000000000000000;//  TABLE 4-13: 
-    // RB13 as output 
-    //
+    TRISB = 0b1000000000001000;//  TABLE 4-13: 
+    LATB =  0b1111111111111111;
+     
+    TRISA = 0b00000; // RB0 - RB7 
+    LATA =  0b00001;
     
-    LATA =  0x0011;
-    TRISA = 0b00000000; // ????? RA0 - RA7 
     _CN15PUE = 1;
     _CN16PUE = 1;
 
@@ -238,46 +126,29 @@ void hardwareConfig(void)
     /* Timer1 register to 16kHz */
     _T1IE = 0;  /* Disable Timer1 interrupt */
     T1CON = 0;              /* Disable Timer */
-    T1CONbits.TCS = 0;      /* Instruction cycle clock - using FOSC/2 */
+    T1CONbits.TCS = 0;      /* Instruction cycle clock */
     T1CONbits.TGATE = 0;    /* Disable Gated Timer mode */
     T1CONbits.TCKPS = 0b0; /* Select 1:256 Prescaler */
     T1CONbits.TSYNC = 0;    /* Synchronize external clock input */
     TMR1 = 0;               /* Clear timer register */
-    PR1 = 1000; //( CLOCK_FREQ (32MHz / ( 2 * 16000 )) ;
+    PR1 = _XTAL_FREQ / 8 / 1000;
     IPC0bits.T1IP = 0x04;   /* Set Timer1 Interrupt Priority Level */
     IFS0bits.T1IF = 0;      /* Clear Timer1 Interrupt Flag */
     IEC0bits.T1IE = 1;      /* Enable Timer1 interrupt */
     T1CONbits.TON = 1;      /* Start Timer */
-
+    
     /* CLK OUT pin 24 - RB13 */
     REFOCONbits.ROEN = 1;   // at REFO pin (RB15)
-    //REFOCONbits.ROSEL = 0;  // System clock used as the base clock; base clock reflects any clock switching of the device
-    //REFOCONbits.ROSSLP = 0; // Reference oscillator continues to run in Sleep
-    //REFOCONbits.RODIV = 0;  // div = 1
-    
-    //FOSC
-    //POSCMD
-    //OSCCONBITS.
-    //OSCIOFNC_ON = 1;
-   // _OSCIOFNC = 1; 
-    
     
     /* Initialize SPI1 module - See SPI1_Initialize() in mmc.c module  */
     _SPIEN = 0;
     
-    // See RPINR20, RPOR6, RPOR7 registers in datasheet
-    RPINR20 = 0x1F0F;	/* SCK1 -> 1F pin (31) Assign -  SDI1 -> C pin (RB15 - physical 26 chip pin) */        
-    RPOR1 = 0x0800;		/* Assign SCK1OUT -> RB3 physical 7 chip pin */
+    // See RPINR20, RPOR6, RPOR7 refisters in datasheet
+    //RPINR20 = 0x1F0F;	/* SCK1 -> 1F pin (31) Assign -  SDI1 -> C pin (RB15 - physical 26 chip pin) */        
     //RPOR6 = 0x0800;		/* Assign SCK1OUT -> RP13 physical 24 chip pin */
-    RPOR7 = 0x0007;		/* Assign RP15 -> nothing, RP14 -> to SDO1 physical 25 chip pin */
-    
-    //RPINR20 = 0x1F06;	/* SCK1 -> 1F pin (31) Assign -  SDI1 -> C pin (RB6 - physical 1 chip pin) */        
-    //RPOR6 = 0x0000;		/* Assign nothing */
-    //RPOR7 = 0x0807;		/* Assign RP15 -> SCK1OUT physical 26 chip pin, RP14 -> to SDO1 physical 25 chip pin */
-    //_DI();
-    //while(1) {
-    //    _LATA0 ^= 1;
-    //}
+    //RPOR7 = 0x0007;		/* Assign RP15 -> nothing, RP14 -> to SDO1 physical 25 chip pin */
+    RPINR20 = 0x1F03;	/* SCK1 -> 1F pin (31) Assign -  SDI1 -> C pin (RB15 - physical 26 chip pin) */   
+    RPOR7 = 0x0807;		/* Assign RP15 -> SCK1OUT physical 26 chip pin, RP14 -> to SDO1 physical 25 chip pin */ 
 }
 
 /*******************************************************************************
@@ -293,7 +164,7 @@ void fatInit()
 {
     if ( !FatFsInited ) {
         if ( f_mount(&FatFs, "", 1) == FR_OK) {	/* Mount SD Card*/
-            FatFsInited = true;            
+            FatFsInited = true;  
         }
     }
 }
@@ -322,10 +193,10 @@ void SDInitialize(void)
     //UINT bw;
     //FRESULT r = f_mount(&FatFs, "", 1);
     //if ( r == FR_OK) {	/* Mount SD */
-     //   FatFsInited = true;
-        //if (f_open(&Fil, "TEMPAAA", FA_WRITE | FA_CREATE_ALWAYS) == FR_OK) {
-            
-        //}
+        
+    //   if (f_open(&Fil, "TEMPAAA", FA_WRITE | FA_CREATE_ALWAYS) == FR_OK) {
+    //        FatFsInited = true;
+    //    }
         
 		//if (f_open(&Fil, "hello.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE) == FR_OK) {	/* Open or create a file */
 
@@ -370,8 +241,8 @@ void SDTasks(void)
 #define TAPE_FILE_ERROR         6
 
 
-#define TAPE_OUT_PORT PORTBbits.RB7
-#define TAPE_OUT_PIN TRISBbits.TRISB7
+#define TAPE_OUT_PORT PORTBbits.RB1
+#define TAPE_OUT_PIN TRISBbits.TRISB1
 
 #define TAPE_LEAD_SIZE 4000
 
@@ -394,13 +265,10 @@ volatile uint16_t blockOffset = 0;
 volatile uint16_t fileOffset = 0;
 volatile uint16_t blockSize = 0;
 volatile uint8_t blockData[1024];
-volatile uint8_t blockState[16];
 
 volatile uint8_t* currentFileName;
 volatile uint8_t fileNameLoad[256]; // filename and path for Ctrl + F5 loading
-volatile char currentDirectory[256];
-
-//volatile uint8_t fileNameSave[256]; // filename and path for Ctrl + F6 save/load(+shift)
+volatile uint8_t fileNameSave[256]; // filename and path for Ctrl + F6 save/load(+shift)
 
 void SaveConfig()
 {    
@@ -408,7 +276,7 @@ void SaveConfig()
     fatInit();
     if (f_open(&Fil, "config.ini", FA_WRITE | FA_CREATE_ALWAYS) == FR_OK) {
         f_write(&Fil, fileNameLoad, 256, &bw);
-        f_write(&Fil, fileNameLoad /*fileNameSave*/, 256, &bw);
+        f_write(&Fil, fileNameSave, 256, &bw);
         f_close(&Fil);								/* Close the file */
     }    
     fatDone();
@@ -421,7 +289,7 @@ void LoadConfig()
     FRESULT r = f_open(&Fil, "config.ini", FA_READ | FA_OPEN_EXISTING);
     if (r == FR_OK) {
         f_read(&Fil, fileNameLoad, 256, &readed);
-        f_read(&Fil, fileNameLoad /*fileNameSave*/, 256, &readed);
+        f_read(&Fil, fileNameSave, 256, &readed);
         f_close(&Fil);
     } else if ( r == FR_NO_FILE ) {
         SaveConfig();
@@ -437,7 +305,7 @@ UINT min(UINT a, UINT b)
 void tapeInitialize(void)
 {
     fileNameLoad[0] = 0;    
-    //strcpy(fileNameLoad /*fileNameSave*/, fileNameSaveTemplate);    
+    strcpy(fileNameSave, fileNameSaveTemplate);    
     
     
     LoadConfig();
@@ -523,9 +391,9 @@ void tapeTasks(void)
                         TapeOutMode = TAPE_OUT_LEAD;
                         LeadToneCounter = TAPE_LEAD_SIZE;
                         if ( (blockCounter & 1) == 0 ) {
-                            DelayBitTimer = 32000; //16000; // 1 sec
+                            DelayBitTimer = 16000; //16000; // 1 sec
                         } else {
-                            DelayBitTimer = 32000; //16000; // 1 sec
+                            DelayBitTimer = 8000; //16000; // 1 sec
                         }                        
                         TapeOutVolume = 1;
 
@@ -774,7 +642,7 @@ void tapeInterrupt(void)
     {
        
         DelayBitTimer = 10;        
-        if (LeadToneCounter > 0 )
+        if (LeadToneCounter > 0 ) 
         {
             LeadToneCounter--;
         }
@@ -901,16 +769,13 @@ void updateKey(uint8_t key, uint8_t down) // true when down
 
 void myDelay()
 {
-    //uint8_t i;
-    //for(i= 0; i < 6; i++) {
-        
-    //}
+    
 }
 
 // Send data to Altera
 void sendDataToAltera()
 {       
-    LATAbits.LATA4 = 1; // STROBE
+    LATBbits.LATB0 = 1; // STROBE
     LATBbits.LATB2 = 0; // RESTRIG
     myDelay();
     LATBbits.LATB2 = 1; // RESTRIG
@@ -919,14 +784,15 @@ void sendDataToAltera()
     myDelay();
     int8_t i, j;
     for(i=0;i<9;i++) {
-        LATAbits.LATA4 = 1; //STROBE
+        LATBbits.LATB0 = 1; //STROBE
         int8_t k = ~outPorts[i];
-        for(j = 0; j < 2; j++) {
-            LATA = (LATA & 0xF0) | ( k & 0x0F );
-            LATAbits.LATA4 = 0; //STROBE 
-            k = k >> 4;
+        for(j = 0; j < 5; j++) {
             myDelay();
-            LATAbits.LATA4 = 1; //STROBE
+            LATAbits.LATA0 = k & 1;
+            LATBbits.LATB0 = 0; //STROBE 
+            k = k >> 1;
+            myDelay();
+            LATBbits.LATB0 = 1; //STROBE
         }
     }
     LATAbits.LATA0 = 1;
@@ -985,7 +851,7 @@ void processKeyCode(uint8_t keyCode, uint8_t keyDown, uint8_t _shift_ctrl_alt)
             currentFileName = &fileNameLoad[0];
             writeKeys(strLoad, KEYBOARD_STATE_DOS_START_TAPE_PLAY);
         } else if( keyCode == 63 ) { // F6
-            currentFileName = &fileNameLoad[0]; //&fileNameSave[0];
+            currentFileName = &fileNameSave[0];
             if ( (shift_ctrl_alt & IK_SHIFT) > 0 ) {
                 keyboardState = KEYBOARD_STATE_DOS_START_TAPE_PLAY;
             } else {
@@ -1087,6 +953,7 @@ void keyboardInterrupt(void)
 volatile uint8_t dosState = 0;
 volatile uint8_t dosViewMask = 0;
 volatile uint16_t dosDelay = 0;
+volatile char currentDirectory[256];
 volatile int8_t pageSize; // ?????????? ?????? ? ??????? ??????????
 volatile int8_t pagePosition; // ??????? ?????? ?????? (????? ???????? ???????? ? 0-?)
 #define pageViewSize 15
@@ -1320,13 +1187,13 @@ void dosInterrupt()
 {    
     if ( dosDelay > 0 ) dosDelay--;
 }
-uint8_t posInfo[3] = { 22, 1, 2 };
+
+static uint8_t posInfo[3] = { 22, 1, 2 };
+static FILINFO fno;
 static char* fnup = "..";
 
 void readDirectory(bool isView)
 {
-   
-    static FILINFO fno;
     FRESULT res;
     DIR dir;
     UINT i;
@@ -1427,7 +1294,6 @@ void readDirectory(bool isView)
 
 void dosTasks()
 {
-    
     if ( dosDelay !=  0) return;
     if ( dosState == DOS_STATE_WAIT ) {
         //
@@ -1459,12 +1325,12 @@ void dosTasks()
                 dosSendData(&fileNameLoad[p], l);
                 dosSendData(&strZXStrInfoSave[0], sizeof(strZXStrInfoSave));
                 p = 0;
-                l = strlen(fileNameLoad); //strlen(fileNameSave);
+                l = strlen(fileNameSave);
                 if ( l > 25 ) {
                     p = l - 25;
                     l = 25;
                 }
-                dosSendData(&fileNameLoad[p], 1);//fileNameSave[p], l);
+                dosSendData(&fileNameSave[p], l);
             }
             /*if ( dosViewMask & DOS_VIEW_MASK_BOTTOM ) {
                 dosSendData(&strZXStrBottom[0], sizeof(strZXStrBottom));
@@ -1486,7 +1352,7 @@ void dosTasks()
             dosSendEnd();
         }
     }
-    //_LATB6 ^= 1;
+    
 }
 
 

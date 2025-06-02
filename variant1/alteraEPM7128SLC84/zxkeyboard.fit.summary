@@ -1,9 +1,9 @@
-Fitter Status : Successful - Mon Jan 13 23:12:25 2020
-Quartus II Version : 9.1 Build 350 03/24/2010 SP 2 SJ Web Edition
+Fitter Status : Successful - Mon Jun 02 17:32:21 2025
+Quartus II Version : 9.1 Build 222 10/21/2009 SJ Full Version
 Revision Name : zxkeyboard
 Top-level Entity Name : zxkeyboard
 Family : MAX7000S
 Device : EPM7128SLC84-15
 Timing Models : Final
-Total macrocells : 63 / 128 ( 49 % )
-Total pins : 41 / 68 ( 60 % )
+Total macrocells : 66 / 128 ( 52 % )
+Total pins : 32 / 68 ( 47 % )

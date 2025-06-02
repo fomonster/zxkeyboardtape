@@ -108,7 +108,7 @@ bool USB_HOST_APP_EVENT_HANDLER ( uint8_t address, USB_EVENT event, void *data, 
  ******************************************************************************/
 
 volatile UINT Timer;        /* 16kHz */
-//volatile BYTE rtcYear = 2013-1980, rtcMon = 1, rtcMday = 23, rtcHour, rtcMin, rtcSec;
+volatile BYTE rtcYear = 2013-1980, rtcMon = 1, rtcMday = 23, rtcHour, rtcMin, rtcSec;
 
 void __attribute__((interrupt, auto_psv)) _T1Interrupt (void)
 {
@@ -161,16 +161,16 @@ void __attribute__((interrupt, auto_psv)) _T1Interrupt (void)
 
 DWORD get_fattime (void)
 {
-    DWORD tmr = 0;
+    DWORD tmr;
 
     _DI();
   
-    /*tmr =  (((DWORD)rtcYear - 80) << 25)
+    tmr =  (((DWORD)rtcYear - 80) << 25)
                 | ((DWORD)rtcMon << 21)
                 | ((DWORD)rtcMday << 16)
                 | (WORD)(rtcHour << 11)
                 | (WORD)(rtcMin << 5)
-                | (WORD)(rtcSec >> 1);*/
+                | (WORD)(rtcSec >> 1);
     _EI();
 
     return tmr;

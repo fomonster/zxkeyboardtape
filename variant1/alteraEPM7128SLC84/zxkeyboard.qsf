@@ -41,7 +41,7 @@ set_global_assignment -name DEVICE "EPM7128SLC84-15"
 set_global_assignment -name TOP_LEVEL_ENTITY zxkeyboard
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION "9.1 SP2"
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "19:03:37  NOVEMBER 29, 2019"
-set_global_assignment -name LAST_QUARTUS_VERSION "9.1 SP2"
+set_global_assignment -name LAST_QUARTUS_VERSION 9.1
 set_global_assignment -name USE_GENERATED_PHYSICAL_CONSTRAINTS OFF -section_id eda_blast_fpga
 set_global_assignment -name MAX7000_OPTIMIZATION_TECHNIQUE AREA
 set_global_assignment -name DEVICE_FILTER_PACKAGE PLCC
@@ -52,9 +52,21 @@ set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name MISC_FILE "c:/Work/zx-keyboard/alteraEPM7128SLC84/zxkeyboard.dpf"
 set_global_assignment -name VHDL_FILE zxkeyboard.vhdl
 set_global_assignment -name MAX7000_DEVICE_IO_STANDARD TTL
-set_location_assignment PIN_1 -to RESTRIG
-set_location_assignment PIN_2 -to STROBE
-set_location_assignment PIN_48 -to A[6]
+set_location_assignment PIN_60 -to A[0]
+set_location_assignment PIN_58 -to A[1]
+set_location_assignment PIN_56 -to A[2]
+set_location_assignment PIN_57 -to A[3]
+set_location_assignment PIN_54 -to A[4]
+set_location_assignment PIN_55 -to A[5]
+set_location_assignment PIN_76 -to RESTRIG
+set_location_assignment PIN_4 -to STROBE
+set_location_assignment PIN_52 -to A[6]
+set_location_assignment PIN_51 -to A[7]
+set_location_assignment PIN_61 -to K[0]
+set_location_assignment PIN_65 -to K[1]
+set_location_assignment PIN_63 -to K[2]
+set_location_assignment PIN_64 -to K[3]
+set_location_assignment PIN_67 -to K[4]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to PB[0]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to PB[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to RESTRIG
@@ -62,45 +74,26 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to STROBE
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to PB[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to PB[3]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to PB[4]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to PBA
 set_global_assignment -name OPTIMIZE_HOLD_TIMING OFF
 set_global_assignment -name FITTER_EFFORT "STANDARD FIT"
 set_location_assignment PIN_74 -to NMI
 set_location_assignment PIN_73 -to RES
 set_location_assignment PIN_69 -to TAPEIN
 set_location_assignment PIN_84 -to TAPEOUT
+set_location_assignment PIN_77 -to TAPEPIC
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to TAPEPIC
+set_global_assignment -name MISC_FILE "C:/Work/zx-keyboard/alteraEPM7128SLC84/zxkeyboard.dpf"
 set_location_assignment PIN_9 -to DAT0
-set_global_assignment -name MISC_FILE "C:/Work/zxkeyboardtape/variant1/alteraEPM7128SLC84/zxkeyboard.dpf"
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DAT0
 set_location_assignment PIN_5 -to DAT1
-set_location_assignment PIN_83 -to REFOCLK
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to REFOCLK
 set_location_assignment PIN_81 -to DAT2
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DAT2
 set_location_assignment PIN_80 -to DAT3
+set_location_assignment PIN_75 -to DAT4
+set_location_assignment PIN_1 -to DAT5
+set_location_assignment PIN_2 -to DAT6
+set_location_assignment PIN_83 -to REFOCLK
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DAT0
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DAT1
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DAT5
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DAT2
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DAT3
-set_location_assignment PIN_67 -to KBD[4]
-set_location_assignment PIN_63 -to KBD[2]
-set_location_assignment PIN_64 -to KBD[3]
-set_location_assignment PIN_65 -to KBD[1]
-set_location_assignment PIN_61 -to KBD[0]
-set_location_assignment PIN_60 -to KBA[0]
-set_location_assignment PIN_58 -to KBA[1]
-set_location_assignment PIN_57 -to KBA[3]
-set_location_assignment PIN_54 -to KBA[4]
-set_location_assignment PIN_56 -to KBA[2]
-set_location_assignment PIN_55 -to KBA[5]
-set_location_assignment PIN_52 -to KBA[6]
-set_location_assignment PIN_51 -to KBA[7]
-set_location_assignment PIN_50 -to RDATA
-set_location_assignment PIN_49 -to SIDE
-set_location_assignment PIN_48 -to TRK00
-set_location_assignment PIN_45 -to WGATE
-set_location_assignment PIN_44 -to WDATA
-set_location_assignment PIN_46 -to DS1A
-set_location_assignment PIN_39 -to DS1B
-set_location_assignment PIN_6 -to DS0B
-set_location_assignment PIN_41 -to MTON
-set_location_assignment PIN_40 -to DS0A
-set_location_assignment PIN_37 -to INDEX
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DAT4

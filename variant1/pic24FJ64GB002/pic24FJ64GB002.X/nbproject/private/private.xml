@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Work/zxkeyboardtape/variant1/pic24FJ64GB002/pic24FJ64GB002.X/main.c</file>
-            <file>file:/C:/Work/zxkeyboardtape/variant1/pic24FJ64GB002/pic24FJ64GB002.X/user.c</file>
+            <file>file:/C:/Work/zx-keyboard/pic24FJ64GB002/pic24FJ64GB002.X/user.c</file>
+            <file>file:/C:/Program%20Files%20(x86)/Microchip/xc16/v1.22/support/PIC24F/h/p24FJ64GB002.h</file>
+            <file>file:/C:/Work/zx-keyboard/pic24FJ64GB002/pic24FJ64GB002.X/main.c</file>
+            <file>file:/C:/Work/zx-keyboard/pic24FJ64GB002/pic24FJ64GB002.X/usb/usb_host.c</file>
         </group>
     </open-files>
 </project-private>

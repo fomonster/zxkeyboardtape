@@ -16,7 +16,6 @@
 #ifdef __XC16
 #ifndef FCY
 #define FCY (_XTAL_FREQ/2)
-//#define FCY _XTAL_FREQ
 #endif
 #include <libpic30.h>
 #endif
